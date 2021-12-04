@@ -71,7 +71,7 @@ from .recognitors.buckwheat_recognitor.garbage_detector_predict import Garbage_D
 @csrf_exempt
 def rec_buckwheat_create_task(request):
     try:
-        image = request.FILES['photo']
+        image = request.FILES['file']
     except KeyError:
         raise Exception('Request has no resource file attached')
         
