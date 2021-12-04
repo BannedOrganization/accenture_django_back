@@ -12,6 +12,8 @@ from base64 import b64decode, b64encode
 # from .recognitors.car_number_recognitor.alpnr2_0 import Recognitor
 from .recognitors.tomato_garbage_detector.garbage_detector_predict import Garbage_Detector as tomatoGD
 from .recognitors.buckwheat_recognitor.garbage_detector_predict import Garbage_Detector as buckwheatGD
+from .recognitors.car_number_recognitor import alpnr2_0
+
 
 @shared_task
 def add(x, y):
@@ -33,10 +35,10 @@ def xsum(numbers):
 @shared_task
 def recognize_car_number_task(image_path):
     
-    result = tomatoGD(image_path)
+    result = alpnr2_0(image_path)
     
-    if result.status == 'SUCCESS':
-        os.remove(image_path)
+    # if result.status == 'SUCCESS':
+    #     os.remove(image_path)
 
     return result
 
@@ -50,7 +52,7 @@ def recognize_buckwheat_task(image_path):
     #     os.remove(image_path)
 
     return result
-    
+
 
 # @shared_task
 # def count_widgets():
