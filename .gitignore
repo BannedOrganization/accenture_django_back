@@ -8,4 +8,8 @@ requirements.txt
 **/__pycache__
 .env
 .idea
+test_photos/
+*.JPG
+*.mp4
+*.sqlite3
 recognitors/
