@@ -21,6 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = os.path.join(BASE_DIR.parent, '.env')
 env = dotenv_values(ENV_PATH)
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -32,6 +34,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Moscow"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+
+REDIS_HOST = env.get('REDIS_HOST')
+REDIS_PORT = env.get('REDIS_PORT')
+
+# CELERY_BROKER_URL = env.get('CELERY_BROKER_URL')
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 # Application definition
 
@@ -44,7 +60,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'recognitors_api',
-    'djoser'
+    # 'django_celery_results'
+    # 'djoser',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +143,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+RECOGNITOR_RESOURCES = os.path.join(BASE_DIR, 'recognitors_api/recognitor_res')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
